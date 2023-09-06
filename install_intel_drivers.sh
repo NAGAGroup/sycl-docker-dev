@@ -1,8 +1,6 @@
 #!/bin/bash
 set -e
 
-sudo dnf install wget python3 -y
-
 export compute_runtime_tag=latest
 export igc_tag=latest
 export cm_tag=latest

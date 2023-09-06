@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# install extra packages
-sudo dnf install python3-psutil psutils perl -y
-
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 export LD_LIBRARY_PATH=
 export CUDA_LIB_PATH=/usr/local/cuda/lib64/stubs
