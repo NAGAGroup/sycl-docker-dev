@@ -73,7 +73,10 @@ RUN sudo chown -R $USERNAME /home/$USERNAME/example_program
 RUN sudo chown $USERNAME run_lit_tests.sh
 
 # Setup bashrc
-RUN echo "export TERM=xterm-256color" > /home/$USERNAME/setup_env.sh
+RUN export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+RUN export LD_LIBRARY_PATH=
+RUN echo "source /opt/rh/gcc-toolset-12/enable" > /home/$USERNAME/setup_env.sh
+RUN echo "export TERM=xterm-256color" >> /home/$USERNAME/setup_env.sh
 RUN echo "export DPCPP_SOURCE=$DPCPP_SOURCE" >> /home/$USERNAME/setup_env.sh
 RUN echo "source /runtimes/oneapi-tbb/env/vars.sh" >> /home/$USERNAME/setup_env.sh
 RUN echo "export PATH=/home/$USERNAME/.local/share/sycl/bin:\$PATH" >> /home/$USERNAME/setup_env.sh
