@@ -47,7 +47,7 @@ WORKDIR /home/$USERNAME
 # Clone Intel LLVM for SYCL
 ARG DPCPP_SOURCE=/home/$USERNAME/.local/source/sycl
 RUN mkdir -p $DPCPP_SOURCE 
-RUN git clone https://github.com/intel/llvm -b sycl --depth=1 $DPCPP_SOURCE/llvm
+RUN git clone https://github.com/intel/llvm -b sycl-web/sycl-latest-good --depth=1 $DPCPP_SOURCE/llvm
 
 # Install OneAPI OpenCL libraries for CPU and FPGA Emulation
 COPY install_intel_drivers.sh /home/$USERNAME
