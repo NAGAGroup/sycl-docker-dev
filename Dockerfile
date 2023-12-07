@@ -6,26 +6,6 @@ ENV NVIDIA_VISIBLE_DEVICES \
 ENV NVIDIA_DRIVER_CAPABILITIES \
         ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics,utility
 
-# Setup SSH
-RUN dnf install -y openssh-server rsync
-RUN ssh-keygen -A
-RUN echo "X11Forwarding yes" >> /etc/ssh/sshd_config
-
-# Setup X11
-RUN dnf install xorg-x11-xauth xorg-x11-fonts-* xorg-x11-utils -y
-RUN dnf install mesa-dri-drivers -y
-
-# Setup Dev Tools
-RUN dnf install gdb cmake -y
-RUN dnf install epel-release -y
-RUN dnf install 'dnf-command(config-manager)'
-RUN dnf config-manager --set-enabled crb
-RUN dnf install @"Development Tools" -y
-RUN dnf install jq ocl-icd cmake git ninja-build python3 gcc-toolset-12 spirv-tools-libs -y
-RUN dnf install librevenge-gdb clang-tools-extra perf wget -y
-RUN dnf install mpfr-devel boost-devel gmp-devel -y
-RUN dnf install python3-psutil psutils perl -y
-
 # Setup User
 ARG USERNAME=sycl
 ARG USER_UID=1000
@@ -41,8 +21,28 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 RUN chpasswd $USERNAME <<< "$USERNAME:naga_is_awesome"
 
+# Setup SSH
+RUN dnf install -y openssh-server rsync
+RUN ssh-keygen -A
+RUN echo "X11Forwarding yes" >> /etc/ssh/sshd_config
+
 USER $USERNAME
 WORKDIR /home/$USERNAME
+
+# Setup X11
+RUN sudo dnf install xorg-x11-xauth xorg-x11-fonts-* xorg-x11-utils -y
+RUN sudo dnf install mesa-dri-drivers -y
+
+# Setup Dev Tools
+RUN sudo dnf install gdb cmake -y
+RUN sudo dnf install epel-release -y
+RUN sudo dnf install 'dnf-command(config-manager)'
+RUN sudo dnf config-manager --set-enabled crb
+RUN sudo dnf install @"Development Tools" -y
+RUN sudo dnf install jq ocl-icd cmake git ninja-build python3 gcc-toolset-12 spirv-tools-devel spirv-tools spirv-tools-libs llvm-toolset vulkan-tools vulkan-loader-devel -y
+RUN sudo dnf install librevenge-gdb clang-tools-extra perf wget -y
+RUN sudo dnf install mpfr-devel boost-devel gmp-devel -y
+RUN sudo dnf install python3-psutil psutils perl -y
 
 # Clone Intel LLVM for SYCL
 ARG DPCPP_SOURCE=/home/$USERNAME/.local/source/sycl
@@ -58,7 +58,13 @@ RUN if [ $? -ne 0 ]; then exit 1; fi
 COPY build_sycl.sh .
 RUN sh build_sycl.sh
 RUN mkdir -p /home/$USERNAME/.local/share
-RUN ln -s $DPCPP_SOURCE/llvm/build /home/$USERNAME/.local/share/sycl
+COPY install_sycl.sh .
+RUN sh install_sycl.sh
+
+# Install up-to-date extra tools using MAMBA
+RUN curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"
+RUN bash Miniforge3-$(uname)-$(uname -m).sh -b -p /home/$USERNAME/conda
+RUN source "${HOME}/conda/etc/profile.d/conda.sh"; source "${HOME}/conda/etc/profile.d/mamba.sh"; conda activate && conda init; mamba install cmake cppcheck doxygen clang-format cmake-format -y
 
 # Setup Example Program
 RUN mkdir /home/$USERNAME/example_program

@@ -12,6 +12,7 @@ source /runtimes/oneapi-tbb/env/vars.sh
 python3 $DPCPP_SOURCE/llvm/buildbot/configure.py --cuda -t Release \
 	--cmake-opt="-DLLVM_INSTALL_UTILS=ON" \
 	--cmake-opt="-DSYCL_PI_TESTS=OFF" \
-	--cmake-opt="-DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda"
-cmake --build $DPCPP_SOURCE/llvm/build
-cmake --build $DPCPP_SOURCE/llvm/build --target deploy-sycl-toolchain
+	--cmake-opt="-DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda" \
+	--cmake-gen="Ninja" \
+	--llvm-external-projects="clang-tools-extra,compiler-rt"
+cmake --build $DPCPP_SOURCE/llvm/build -j12
