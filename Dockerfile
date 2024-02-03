@@ -64,7 +64,9 @@ RUN sh install_sycl.sh
 # Install up-to-date extra tools using MAMBA
 RUN curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"
 RUN bash Miniforge3-$(uname)-$(uname -m).sh -b -p /home/$USERNAME/conda
-RUN source "${HOME}/conda/etc/profile.d/conda.sh"; source "${HOME}/conda/etc/profile.d/mamba.sh"; conda activate && conda init; mamba install cmake cppcheck doxygen clang-format cmake-format -y
+RUN source "${HOME}/conda/etc/profile.d/conda.sh"; source "${HOME}/conda/etc/profile.d/mamba.sh"; conda activate && conda init; mamba install cmake cppcheck doxygen texlive-core ghostscript clang-format cmake-format npx prettier codespell -y; pip install clang-tidy
+RUN mv /home/sycl/.local/share/sycl/bin/clang-tidy /home/sycl/.local/share/sycl/bin/clang-tidy.bak
+RUN mv /home/sycl/.local/share/sycl/bin/clang-format /home/sycl/.local/share/sycl/bin/clang-format.bak
 
 # Setup Example Program
 RUN mkdir /home/$USERNAME/example_program
