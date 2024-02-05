@@ -1,5 +1,11 @@
 #!/bin/bash
+
+# For more information on where this script
+# came from, see devops/containers/ubuntu2204_intel_drivers.Dockerfile
+# in llvm sycl repo
+
 set -e
+set -x
 
 export compute_runtime_tag=latest
 export igc_tag=latest
@@ -13,4 +19,5 @@ sudo mkdir /runtimes
 sudo mkdir -p /etc/OpenCL/vendors
 export INSTALL_LOCATION=/runtimes
 
-sudo -E sh $DPCPP_SOURCE/llvm/devops/scripts/install_drivers.sh --cpu --fpga-emu
+sudo dnf install -y jq procps-ng
+sudo -E sh $BUILD_WORKSPACE/llvm/devops/scripts/install_drivers.sh --cpu --fpga-emu

@@ -1,18 +1,15 @@
 #!/bin/bash
 set -e
+set -x
 
-export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-export LD_LIBRARY_PATH=
-export CUDA_LIB_PATH=/usr/local/cuda/lib64/stubs
-export CC=gcc
-export CXX=g++
-source /opt/rh/gcc-toolset-12/enable
+source $HOME/.bashrc
 source /runtimes/oneapi-tbb/env/vars.sh
 
-python3 $DPCPP_SOURCE/llvm/buildbot/configure.py --cuda -t Release \
-	--cmake-opt="-DLLVM_INSTALL_UTILS=ON" \
-	--cmake-opt="-DSYCL_PI_TESTS=OFF" \
-	--cmake-opt="-DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda" \
-	--cmake-gen="Ninja" \
-	--llvm-external-projects="clang-tools-extra,compiler-rt"
-cmake --build $DPCPP_SOURCE/llvm/build -j12
+cmake --build $BUILD_WORKSPACE/src/build -- -j12
+#cmake --build $BUILD_WORKSPACE/build --target check-llvm
+#cmake --build $GITHUB_WORKSPACE/build --target check-clang
+#cmake --build $GITHUB_WORKSPACE/build --target check-sycl
+#cmake --build $GITHUB_WORKSPACE/build --target check-llvm-spirv
+#cmake --build $GITHUB_WORKSPACE/build --target check-xptifw
+#cmake --build $GITHUB_WORKSPACE/build --target check-libclc
+#cmake --build $GITHUB_WORKSPACE/build --target check-libdevice
