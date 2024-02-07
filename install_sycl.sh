@@ -2,8 +2,7 @@
 set -e
 set -x
 
-source $HOME/.bashrc
-source /runtimes/oneapi-tbb/env/vars.sh
+source $HOME/setup_env.sh
 
 CMAKE_BINARY=$(which cmake)
 export CMAKE_BINARY=$CMAKE_BINARY

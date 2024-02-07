@@ -2,8 +2,7 @@
 set -e
 set -x
 
-source $HOME/.bashrc
-source /runtimes/oneapi-tbb/env/vars.sh
+source $HOME/setup_env.sh
 
 cmake --build $BUILD_WORKSPACE/src/build -- -j12
 #cmake --build $BUILD_WORKSPACE/build --target check-llvm
