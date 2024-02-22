@@ -2,8 +2,6 @@
 set -e
 set -x
 
-source $HOME/setup_env.sh
-
 cmake --build $BUILD_WORKSPACE/src/build -- -j12
 #cmake --build $BUILD_WORKSPACE/build --target check-llvm
 #cmake --build $GITHUB_WORKSPACE/build --target check-clang
