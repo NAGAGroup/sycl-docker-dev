@@ -2,11 +2,6 @@
 set -e
 set -x
 
-export CUDA_LIB_PATH=/usr/local/cuda/lib64/stubs
-export CC=gcc
-export CXX=g++
-source $HOME/setup_env.sh
-
 cmake --build /usr/local/sycl --target deploy-sycl-toolchain
 # cmake --build /usr/local/sycl --target utils/FileCheck/install
 # cmake --build /usr/local/sycl --target utils/count/install
