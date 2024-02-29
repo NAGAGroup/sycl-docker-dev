@@ -2,11 +2,7 @@
 set -e
 set -x
 
-export CUDA_LIB_PATH=/usr/local/cuda/lib64/stubs
-export CC=gcc
-export CXX=g++
-
-cmake --build /usr/local/sycl -- -j12
+cmake --build $PIXI_PROJECT_ROOT/llvm-build -- -j12
 #cmake --build /usr/local/sycl --target check-llvm
 #cmake --build /usr/local/sycl --target check-clang
 #cmake --build /usr/local/sycl --target check-sycl
