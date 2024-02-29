@@ -11,6 +11,6 @@ cmake --build $PIXI_PROJECT_ROOT/llvm-build --target deploy-sycl-toolchain
 # cmake --build /usr/local/sycl --target install-llvm-size
 # cmake --build /usr/local/sycl --target install-llvm-cov
 # cmake --build /usr/local/sycl --target install-llvm-profdata
-cmake --install $PIXI_PROJECT_ROOT --prefix $PIXI_PROJECT_ROOT/.pixi/envs/default
+# cmake --install $PIXI_PROJECT_ROOT/llvm-build --prefix $PIXI_PROJECT_ROOT/.pixi/envs/default
 
 ln -s $PIXI_PROJECT_ROOT/llvm-build/bin/* $PIXI_PROJECT_ROOT/.pixi/envs/default/bin
